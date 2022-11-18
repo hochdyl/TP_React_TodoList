@@ -1,21 +1,30 @@
 import React, {FormEvent, useState} from "react";
 import {FormProps} from "../types";
+import {FaLock, FaPlus} from "react-icons/fa";
 
 const Form: React.FC<FormProps> = (props) => {
-    const {onSubmit} = props
+    const {onSubmit, error} = props
     const [title, setTitle] = useState<string>("")
 
     return (
         <form className="form rounded-container" onSubmit={(e: FormEvent<HTMLFormElement>) => {
             e.preventDefault()
-            onSubmit(title)
+            if (title.length > 0) {
+                onSubmit(title)
+            }
         }}>
             <input
                 type="text"
-                name="title"
+                className={`text-input ${error && "error"}`}
                 onChange={(e) => setTitle(e.target.value)}
             />
-            <input type="submit" />
+            <button className={`button ${title.length > 0 ? "add" : "locked"}`} type="submit">
+                {title.length > 0 ?
+                    <FaPlus color="#fff" />
+                    :
+                    <FaLock color="#fff" />
+                }
+            </button>
         </form>
     )
 }
